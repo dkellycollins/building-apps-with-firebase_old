@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Observable } from 'rxjs';
+import { User, auth } from 'firebase';
 
 @Component({
   selector: 'app-side-nav',
@@ -7,9 +10,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SideNavComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private readonly angularFireAuth: AngularFireAuth
+  ) { }
 
-  ngOnInit(): void {
+  public user$: Observable<User>;
+
+  public ngOnInit(): void {
+    this.user$ = this.angularFireAuth.user;
+  }
+
+  public login(): void {
+    this.angularFireAuth.auth.signInWithRedirect(new auth.GoogleAuthProvider());
+  }
+
+  public logout(): void {
+    this.angularFireAuth.auth.signOut();
   }
 
 }
