@@ -13,11 +13,13 @@ export class LocalStorageTransactionService {
     return this._transactions$.asObservable();
   }
 
-  public add(model: TransactionModel): void {
+  public add(model: TransactionModel): Promise<void> {
     var transactions = [...this._transactions$.getValue(), model];
 
     this._transactions$.next([...this._transactions$.getValue(), model]);
     this.save(transactions);
+
+    return Promise.resolve();
   }
 
   private load(): Array<TransactionModel> {

@@ -10,6 +10,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class TransactionNewComponent implements OnInit {
 
+  public hasError: boolean;
   public form: FormGroup;
 
   constructor(
@@ -30,9 +31,15 @@ export class TransactionNewComponent implements OnInit {
     this.dialog.close(null);
   }
 
-  public submit(value: any): void {
-    this.transactionService.add(value);
-    this.dialog.close(null);
+  public async submit(value: any): Promise<void> {
+    this.hasError = false;
+    try {
+      await this.transactionService.add(value);
+      this.dialog.close(null);
+    }
+    catch (e) {
+      console.error(e);
+      this.hasError = true;
+    }
   }
-
 }
