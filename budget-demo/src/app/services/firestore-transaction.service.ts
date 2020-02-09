@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { TransactionModel } from '../models/transaction.model';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map, filter, first, switchMap, tap } from 'rxjs/operators';
+import { map, filter, switchMap } from 'rxjs/operators';
 import { firestore, User } from 'firebase';
 import { AngularFireAuth } from '@angular/fire/auth';
 
@@ -19,7 +19,6 @@ export class FirestoreTransactionService {
   public get transactions$(): Observable<Array<TransactionModel>> {
     return this.user$.pipe(
       filter(user => !!user),
-      tap(console.log),
       switchMap(user => this.firestore.collection<TransactionDto>('transactions', ref => ref.where('owner', '==', user.uid)).valueChanges()),
       map((collection) => {
         return collection.map(dto => {
