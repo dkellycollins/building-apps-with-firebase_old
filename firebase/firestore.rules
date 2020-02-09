@@ -7,7 +7,7 @@ service cloud.firestore {
 
     match /transactions/{transaction} {
       allow read: if request.auth.uid == resource.data.owner;
-      allow write: if request.auth.uid == request.resource.data.owner;
+      allow write: if request.auth.uid == request.resource.data.owner && request.resource.data.amount > 0;
     }
   }
 }
