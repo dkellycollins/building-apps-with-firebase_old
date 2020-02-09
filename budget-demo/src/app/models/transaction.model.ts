@@ -1,7 +1,6 @@
 
 export interface TransactionModel {
-  id: string;
   category: string;
-  date: string;
+  date: Date;
   amount: number;
 }
