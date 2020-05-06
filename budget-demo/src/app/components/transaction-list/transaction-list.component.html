@@ -1,7 +1,7 @@
 <div class="container">
   <mat-list>
     <ng-container *ngFor="let transaction of transactions$ | async">
-      <mat-list-item class="transaction-container">
+      <mat-list-item class="transaction-container" (click)="showTransaction(transaction)">
         <h3 matLine>{{transaction.category}}</h3>
         <p matLine>{{transaction.date | date}}</p>
         <span class="transaction-amount">{{transaction.amount | currency}}</span>

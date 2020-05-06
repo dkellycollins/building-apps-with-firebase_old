@@ -3,6 +3,9 @@ import { LocalStorageTransactionService } from 'src/app/services/local-storage-t
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FirestoreTransactionService } from 'src/app/services/firestore-transaction.service';
+import { getMultipleValuesInSingleSelectionError } from '@angular/cdk/collections';
+import { FirestoreImageService } from 'src/app/services/firestore-image.service';
+import { FileInput } from 'ngx-material-file-input';
 
 @Component({
   selector: 'app-transaction-new',
@@ -16,6 +19,7 @@ export class TransactionNewComponent implements OnInit {
 
   constructor(
     private readonly transactionService: FirestoreTransactionService,
+    private readonly imageService: FirestoreImageService,
     private readonly dialog: MatDialogRef<TransactionNewComponent>,
     private readonly formBuilder: FormBuilder
   ) { }
@@ -24,8 +28,11 @@ export class TransactionNewComponent implements OnInit {
     this.form = this.formBuilder.group({
       category: '',
       date: new Date(),
-      amount: 0
+      amount: 0,
+      image: null
     });
+
+    this.form.valueChanges.subscribe(console.log);
   }
 
   public cancel(): void {
@@ -35,7 +42,12 @@ export class TransactionNewComponent implements OnInit {
   public async submit(value: any): Promise<void> {
     this.hasError = false;
     try {
-      await this.transactionService.add(value);
+      const transactionId = await this.transactionService.add(value);
+
+      const fileInput = value.image as FileInput;
+      const file = fileInput.files[0];
+      await this.imageService.upload(transactionId, file)
+
       this.dialog.close(null);
     }
     catch (e) {

@@ -5,6 +5,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { map, filter, switchMap } from 'rxjs/operators';
 import { firestore, User } from 'firebase';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -19,10 +20,12 @@ export class FirestoreTransactionService {
   public get transactions$(): Observable<Array<TransactionModel>> {
     return this.user$.pipe(
       filter(user => !!user),
-      switchMap(user => this.firestore.collection<TransactionDto>('transactions', ref => ref.where('owner', '==', user.uid)).valueChanges()),
+      switchMap(user => this.firestore.collection<TransactionDto>('transactions', ref => ref.where('owner', '==', user.uid)).valueChanges({ idField: 'id' })),
       map((collection) => {
+        console.log(collection);
         return collection.map(dto => {
           return {
+            id: dto.id,
             category: dto.category,
             amount: dto.amount,
             date: dto.date.toDate()
@@ -32,13 +35,14 @@ export class FirestoreTransactionService {
     )
   }
 
-  public async add(transaction: TransactionModel): Promise<void> {
-    await this.firestore.collection<TransactionDto>('transactions').add({
+  public async add(transaction: TransactionModel): Promise<string> {
+    const document = await this.firestore.collection<TransactionDto>('transactions').add({
       category: transaction.category,
       amount: transaction.amount,
       date: firestore.Timestamp.fromDate(transaction.date),
       owner: this.user$.getValue().uid
     });
+    return document.id;
   }
 
   private _user$: BehaviorSubject<User>;
@@ -52,6 +56,7 @@ export class FirestoreTransactionService {
 }
 
 class TransactionDto {
+  id?: string;
   category: string;
   amount: number;
   date: firestore.Timestamp;

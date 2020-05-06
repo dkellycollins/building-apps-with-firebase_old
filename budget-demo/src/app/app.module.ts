@@ -21,12 +21,16 @@ import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { TransactionImageComponent } from './components/transaction-image/transaction-image.component';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 @NgModule({
   declarations: [
     AppComponent,
     TransactionListComponent,
     TransactionNewComponent,
+    TransactionImageComponent,
     SideNavComponent
   ],
   imports: [
@@ -46,7 +50,9 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    AngularFireStorageModule,
+    MaterialFileInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]
