@@ -24,6 +24,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { TransactionImageComponent } from './components/transaction-image/transaction-image.component';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
-    MaterialFileInputModule
+    MaterialFileInputModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

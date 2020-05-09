@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { TransactionNewComponent } from '../transaction-new/transaction-new.component';
 import { FirestoreTransactionService } from 'src/app/services/firestore-transaction.service';
 import { TransactionImageComponent } from '../transaction-image/transaction-image.component';
+import { shareReplay, switchMap, map } from 'rxjs/operators';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-transaction-list',
@@ -13,15 +15,23 @@ import { TransactionImageComponent } from '../transaction-image/transaction-imag
 })
 export class TransactionListComponent implements OnInit {
 
+  public totalAmount$: Observable<number>;
   public transactions$: Observable<Array<TransactionModel>>;
 
   constructor(
     private readonly transactionService: FirestoreTransactionService,
+    private readonly functionsService: ApiService,
     private readonly dialog: MatDialog
   ) { }
 
   public ngOnInit(): void {
-    this.transactions$ = this.transactionService.transactions$;
+    this.transactions$ = this.transactionService.transactions$.pipe(
+      shareReplay(1)
+    );
+    this.totalAmount$ = this.transactions$.pipe(
+      switchMap(() => this.functionsService.getTotalForUser()),
+      map(response => response.totalAmount)
+    );
   }
 
   public showTransaction(transaction: TransactionModel): void {

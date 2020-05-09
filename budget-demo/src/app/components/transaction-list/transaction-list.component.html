@@ -1,4 +1,7 @@
 <div class="container">
+  <mat-toolbar>
+    {{ totalAmount$ | async | currency }}
+  </mat-toolbar>
   <mat-list>
     <ng-container *ngFor="let transaction of transactions$ | async">
       <mat-list-item class="transaction-container" (click)="showTransaction(transaction)">
