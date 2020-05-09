@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class FirestoreImageService {
+export class FirestorageImageService {
 
   constructor(
     private readonly fireStorage: AngularFireStorage

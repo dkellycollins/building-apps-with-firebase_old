@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Inject } from "@angular/core";
-import { FirestoreImageService } from 'src/app/services/firestore-image.service';
+import { FirestorageImageService } from 'src/app/services/firestorage-image.service';
 import { Observable } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { tap } from 'rxjs/operators';
@@ -14,7 +14,7 @@ export class TransactionImageComponent implements OnInit {
   public imageUrl$: Observable<string>;
 
   constructor(
-    private readonly imageService: FirestoreImageService,
+    private readonly imageService: FirestorageImageService,
     private readonly dialog: MatDialogRef<TransactionImageComponent>,
     @Inject(MAT_DIALOG_DATA) private readonly data: { transactionId: string }
   ) { }

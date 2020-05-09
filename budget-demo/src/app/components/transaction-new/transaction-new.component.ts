@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FirestoreTransactionService } from 'src/app/services/firestore-transaction.service';
 import { getMultipleValuesInSingleSelectionError } from '@angular/cdk/collections';
-import { FirestoreImageService } from 'src/app/services/firestore-image.service';
+import { FirestorageImageService } from 'src/app/services/firestorage-image.service';
 import { FileInput } from 'ngx-material-file-input';
 
 @Component({
@@ -19,7 +19,7 @@ export class TransactionNewComponent implements OnInit {
 
   constructor(
     private readonly transactionService: FirestoreTransactionService,
-    private readonly imageService: FirestoreImageService,
+    private readonly imageService: FirestorageImageService,
     private readonly dialog: MatDialogRef<TransactionNewComponent>,
     private readonly formBuilder: FormBuilder
   ) { }
