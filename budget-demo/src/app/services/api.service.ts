@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { UserService } from './user.service';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { filter, take, switchMap } from 'rxjs/operators';
 
@@ -23,7 +23,13 @@ export class ApiService {
     return this.userService.user$.pipe(
       filter(user => !!user),
       take(1),
-      switchMap(user => this.httpClient.get<TransactionsTotalResponse>(url, { params: { userUid: user.uid }}))
+      switchMap(user => from(user.getIdToken())),
+      switchMap(idToken => {
+        const headers = {
+          'Authorization': `Bearer ${idToken}`
+        };
+        return this.httpClient.get<TransactionsTotalResponse>(url, { headers: headers });
+      })
     );
   }
 }
