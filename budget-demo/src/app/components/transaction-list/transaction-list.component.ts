@@ -6,6 +6,7 @@ import { TransactionNewComponent } from '../transaction-new/transaction-new.comp
 import { FirestoreTransactionService } from 'src/app/services/firestore-transaction.service';
 import { ApiService } from 'src/app/services/api.service';
 import { shareReplay, switchMap, map } from 'rxjs/operators';
+import { TransactionImageComponent } from '../transaction-image/transaction-image.component';
 
 @Component({
   selector: 'app-transaction-list',
@@ -33,6 +34,12 @@ export class TransactionListComponent implements OnInit {
     
     await dialog.afterClosed().toPromise();
     this.refreshTransactionsTotal();
+  }
+
+  public showTransaction(transaction: TransactionModel): void {
+    this.dialog.open(TransactionImageComponent, {
+      data: { transactionId: transaction.id }
+    });
   }
 
   private refreshTransactionsTotal(): void {
