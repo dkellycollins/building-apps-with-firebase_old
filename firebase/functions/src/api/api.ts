@@ -8,6 +8,10 @@ const firebaseApp = admin.initializeApp();
 
 api
   .use(cors())
+  .use((req, res, next) => {
+    console.log(req.url);
+    next();
+  })
   .get('/getTransactionsTotalForUser', async (req, res) => {
     const userUid = req.query.userUid;
 
