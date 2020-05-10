@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { LocalStorageTransactionService } from 'src/app/services/local-storage-transaction.service';
 import { Observable } from 'rxjs';
 import { TransactionModel } from 'src/app/models/transaction.model';
 import { MatDialog } from '@angular/material/dialog';
 import { TransactionNewComponent } from '../transaction-new/transaction-new.component';
+import { FirestoreTransactionService } from 'src/app/services/firestore-transaction.service';
 
 @Component({
   selector: 'app-transaction-list',
@@ -15,7 +15,7 @@ export class TransactionListComponent implements OnInit {
   public transactions$: Observable<Array<TransactionModel>>;
 
   constructor(
-    private readonly transactionService: LocalStorageTransactionService,
+    private readonly transactionService: FirestoreTransactionService,
     private readonly dialog: MatDialog
   ) { }
 
