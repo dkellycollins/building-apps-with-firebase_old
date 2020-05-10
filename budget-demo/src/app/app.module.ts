@@ -17,6 +17,9 @@ import { TransactionListComponent } from './components/transaction-list/transact
 import { TransactionNewComponent } from './components/transaction-new/transaction-new.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SideNavComponent } from './components/side-nav/side-nav.component';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from 'src/environments/environment';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 @NgModule({
   declarations: [
@@ -39,7 +42,9 @@ import { SideNavComponent } from './components/side-nav/side-nav.component';
     MatSidenavModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule
   ],
   providers: [],
   bootstrap: [AppComponent]
