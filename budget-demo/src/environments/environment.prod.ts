@@ -9,5 +9,8 @@ export const environment = {
     messagingSenderId: "492926800489",
     appId: "1:492926800489:web:1693154549c3fe6181c8f8",
     measurementId: "G-ED60BHJ022"
+  },
+  functions: {
+    api: 'https://us-central1-budget-demo-4e826.cloudfunctions.net/api'
   }
 };

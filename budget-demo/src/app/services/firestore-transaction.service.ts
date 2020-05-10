@@ -5,6 +5,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { map, filter, switchMap } from 'rxjs/operators';
 import { firestore, User } from 'firebase';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +14,11 @@ export class FirestoreTransactionService {
 
   constructor(
     private readonly firestore: AngularFirestore,
-    private readonly auth: AngularFireAuth
+    private readonly userService: UserService
   ) { }
 
   public get transactions$(): Observable<Array<TransactionModel>> {
-    return this.user$.pipe(
+    return this.userService.user$.pipe(
       filter(user => !!user),
       switchMap(user => this.firestore.collection<TransactionDto>('transactions', ref => ref.where('owner', '==', user.uid)).valueChanges()),
       map((collection) => {
@@ -37,17 +38,8 @@ export class FirestoreTransactionService {
       category: transaction.category,
       amount: transaction.amount,
       date: firestore.Timestamp.fromDate(transaction.date),
-      owner: this.user$.getValue().uid
+      owner: this.userService.getCurrentUser().uid
     });
-  }
-
-  private _user$: BehaviorSubject<User>;
-  private get user$(): BehaviorSubject<User> {
-    if (!this._user$) {
-      this._user$ = new BehaviorSubject<User>(undefined);
-      this.auth.user.subscribe(this._user$);
-    }
-    return this._user$;
   }
 }
 
